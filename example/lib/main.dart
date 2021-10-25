@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -43,10 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: <Widget>[
-            Text(
-              text,
-              style: Theme.of(context).textTheme.display1,
-            ),
+            Text(text),
             SwitchListTile(
               title: Text(
                 'Keyboard Type = ' +
@@ -83,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Fired when the virtual keyboard key is pressed.
   _onKeyPress(VirtualKeyboardKey key) {
     if (key.keyType == VirtualKeyboardKeyType.String) {
-      text = text + (shiftEnabled ? key.capsText : key.text);
+      text = text + (shiftEnabled ? key.capsText! : key.text!);
     } else if (key.keyType == VirtualKeyboardKeyType.Action) {
       switch (key.action) {
         case VirtualKeyboardKeyAction.Backspace:
@@ -94,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
           text = text + '\n';
           break;
         case VirtualKeyboardKeyAction.Space:
-          text = text + key.text;
+          text = text + key.text!;
           break;
         case VirtualKeyboardKeyAction.Shift:
           shiftEnabled = !shiftEnabled;

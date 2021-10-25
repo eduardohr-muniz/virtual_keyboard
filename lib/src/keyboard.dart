@@ -24,15 +24,15 @@ class VirtualKeyboard extends StatefulWidget {
   final double fontSize;
 
   /// The builder function will be called for each Key object.
-  final Widget Function(BuildContext context, VirtualKeyboardKey key) builder;
+  final Widget Function(BuildContext context, VirtualKeyboardKey key)? builder;
 
   /// Set to true if you want only to show Caps letters.
   final bool alwaysCaps;
 
   VirtualKeyboard(
-      {Key key,
-      @required this.type,
-      @required this.onKeyPress,
+      {Key? key,
+      required this.type,
+      required this.onKeyPress,
       this.builder,
       this.height = _virtualKeyboardDefaultHeight,
       this.textColor = Colors.black,
@@ -48,22 +48,22 @@ class VirtualKeyboard extends StatefulWidget {
 
 /// Holds the state for Virtual Keyboard class.
 class _VirtualKeyboardState extends State<VirtualKeyboard> {
-  VirtualKeyboardType type;
-  Function onKeyPress;
+  VirtualKeyboardType? type;
+  late Function onKeyPress;
   // The builder function will be called for each Key object.
-  Widget Function(BuildContext context, VirtualKeyboardKey key) builder;
-  double height;
-  Color textColor;
-  double fontSize;
-  bool alwaysCaps;
+  Widget Function(BuildContext context, VirtualKeyboardKey key)? builder;
+  late double height;
+  late Color textColor;
+  late double fontSize;
+  late bool alwaysCaps;
   // Text Style for keys.
-  TextStyle textStyle;
+  late TextStyle textStyle;
 
   // True if shift is enabled.
   bool isShiftEnabled = false;
 
   @override
-  void didUpdateWidget(Widget oldWidget) {
+  void didUpdateWidget(VirtualKeyboard oldWidget) {
     super.didUpdateWidget(oldWidget);
     setState(() {
       type = widget.type;
@@ -170,11 +170,9 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
                 }
               } else {
                 // Call the builder function, so the user can specify custom UI for keys.
-                keyWidget = builder(context, virtualKeyboardKey);
+                keyWidget = builder!(context, virtualKeyboardKey);
 
-                if (keyWidget == null) {
-                  throw 'builder function must return Widget';
-                }
+                throw 'builder function must return Widget';
               }
 
               return keyWidget;
@@ -188,7 +186,7 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
   }
 
   // True if long press is enabled.
-  bool longPress;
+  late bool longPress;
 
   /// Creates default UI element for keyboard Key.
   Widget _keyboardDefaultKey(VirtualKeyboardKey key) {
@@ -202,8 +200,8 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
         child: Center(
             child: Text(
           alwaysCaps
-              ? key.capsText
-              : (isShiftEnabled ? key.capsText : key.text),
+              ? key.capsText!
+              : (isShiftEnabled ? key.capsText! : key.text!),
           style: textStyle,
         )),
       ),
@@ -216,7 +214,7 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
     Widget actionKey;
 
     // Switch the action type to build action Key widget.
-    switch (key.action) {
+    switch (key.action!) {
       case VirtualKeyboardKeyAction.Backspace:
         actionKey = GestureDetector(
             onLongPress: () {
