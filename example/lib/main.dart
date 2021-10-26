@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:virtual_keyboard/virtual_keyboard.dart';
+import 'package:virtual_keyboard_2/virtual_keyboard.dart';
 
 void main() => runApp(MyApp());
 
@@ -34,6 +34,14 @@ class _MyHomePageState extends State<MyHomePage> {
   // is true will show the numeric keyboard.
   bool isNumericMode = true;
 
+  late TextEditingController _controllerText;
+
+  @override
+  void initState() {
+    _controllerText = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +51,16 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: <Widget>[
-            Text(text),
+            Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  controller: _controllerText,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Your text',
+                  ),
+                )),
             SwitchListTile(
               title: Text(
                 'Keyboard Type = ' +
@@ -69,37 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   type: isNumericMode
                       ? VirtualKeyboardType.Numeric
                       : VirtualKeyboardType.Alphanumeric,
-                  onKeyPress: _onKeyPress),
+                  textController: _controllerText),
             )
           ],
         ),
       ),
     );
-  }
-
-  /// Fired when the virtual keyboard key is pressed.
-  _onKeyPress(VirtualKeyboardKey key) {
-    if (key.keyType == VirtualKeyboardKeyType.String) {
-      text = text + (shiftEnabled ? key.capsText! : key.text!);
-    } else if (key.keyType == VirtualKeyboardKeyType.Action) {
-      switch (key.action) {
-        case VirtualKeyboardKeyAction.Backspace:
-          if (text.length == 0) return;
-          text = text.substring(0, text.length - 1);
-          break;
-        case VirtualKeyboardKeyAction.Return:
-          text = text + '\n';
-          break;
-        case VirtualKeyboardKeyAction.Space:
-          text = text + key.text!;
-          break;
-        case VirtualKeyboardKeyAction.Shift:
-          shiftEnabled = !shiftEnabled;
-          break;
-        default:
-      }
-    }
-    // Update the screen
-    setState(() {});
   }
 }
