@@ -1,7 +1,7 @@
-name: virtual_keyboard
-description: A simple package for dispaying virtual keyboards on a devices like kiosks and ATMs. The library is written in Dart and has no native code dependancy. 
-version: 0.1.4
-homepage: https://github.com/gurgenDP/virtual_keyboard
+name: virtual_keyboard_2
+description: A simple package for dispaying virtual keyboards on a devices like kiosks and ATMs. The library is written in Dart and has no native code dependancy. Forked from virtual_keyboard
+version: 0.0.2
+homepage: https://github.com/fedepaj/virtual_keyboard
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
